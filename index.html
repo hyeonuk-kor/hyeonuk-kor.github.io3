@@ -1,47 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta charset="UTF-8" />
-		<title>Document</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta
+			name="viewport"
+			content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"
+		/>
+		<title>Study Day</title>
+		<link rel="StyleSheet" href="skins/main.css" />
+		<script type="text/javascript">
+			window.addEventListener(
+				"load",
+				function () {
+					setTimeout(loaded, 100);
+				},
+				false
+			);
+
+			function loaded() {
+				window.scrollTo(0, 1);
+			}
+		</script>
 	</head>
 	<body>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
-		<h1>localStorage To Do List</h1>
-		<form id="form">
-			<input type="text" placeholder="Add New..." />
-			<button>Add Item</button>
-		</form>
-		<ul id="list"></ul>
+		<div class="container">
+			<div class="today">
+				<p class="subtitle">2022. 09. 28 Thur.</p>
+			</div>
+			<div class="myday">
+				<div class="box">
+					<p class="subtitle">D-24</p>
+					<p class="sub">JLPT</p>
+					<p class="sub">2022. 12. 04</p>
+				</div>
+			</div>
+			<p style="clear: both; height: 1px"></p>
+			<div class="table">
+				<table>
+					<tr>
+						<td>　</td>
+						<td class="tb">월</td>
+						<td class="tb">화</td>
+						<td class="tb">수</td>
+						<td class="tb">목</td>
+						<td class="tb">금</td>
+					</tr>
+					<tr>
+						<td class="tb">1</td>
+						<td>과학</td>
+						<td>국어</td>
+						<td>영어</td>
+						<td>수학</td>
+						<td>과학</td>
+					</tr>
+					<tr>
+						<td class="tb">2</td>
+						<td>과학</td>
+						<td>국어</td>
+						<td>영어</td>
+						<td>수학</td>
+						<td>과학</td>
+					</tr>
+					<tr>
+						<td class="tb">3</td>
+						<td>과학</td>
+						<td>국어</td>
+						<td>영어</td>
+						<td>수학</td>
+						<td>과학</td>
+					</tr>
+					<tr>
+						<td class="tb">4</td>
+						<td>과학</td>
+						<td>국어</td>
+						<td>영어</td>
+						<td>수학</td>
+						<td>과학</td>
+					</tr>
+					<tr>
+						<td class="tb">5</td>
+						<td>과학</td>
+						<td>국어</td>
+						<td>영어</td>
+						<td>수학</td>
+						<td>과학</td>
+					</tr>
+					<tr>
+						<td class="tb">6</td>
+						<td>과학</td>
+						<td>국어</td>
+						<td>영어</td>
+						<td>수학</td>
+						<td>과학</td>
+					</tr>
+					<tr>
+						<td class="tb">7</td>
+						<td>과학</td>
+						<td>국어</td>
+						<td>영어</td>
+						<td>수학</td>
+						<td>과학</td>
+					</tr>
+					<tr>
+						<td class="tb">8</td>
+						<td>과학</td>
+						<td>국어</td>
+						<td>영어</td>
+						<td>수학</td>
+						<td>과학</td>
+					</tr>
+				</table>
+			</div>
+			<p style="clear: both"></p>
+			<div class="todo">
+				<ul class="checklist">
+					<li>일본어 단어 외우기</li>
+					<li>자바스크립트 공부</li>
+					<li>토이 프로젝트 디자인하기</li>
+					<li>밥먹기</li>
+				</ul>
+			</div>
+			<p style="clear: both"></p>
+			<div class="footer">
+				<div class="img_div">
+					<img class="imgs" src="/skins/smile_1.png" />
+				</div>
+				<div class="img_div">
+					<img class="imgs" src="/skins/hourglass_1.png" />
+				</div>
+				<div class="img_div">
+					<img class="imgs" src="/skins/school.png" />
+				</div>
+				<div class="img_div">
+					<img class="imgs" src="/skins/todo.png" />
+				</div>
+			</div>
+		</div>
 	</body>
-	<script type="text/javascript">
-		//add
-		$("button").on("click", function () {
-			var $item = $("input").val();
-			$("ul").append("<li>" + $item + "</li>");
-
-			//set
-			$("#form")[0].reset();
-			var list = $("#list").html();
-			localStorage.setItem("list", list);
-			return false;
-		});
-
-		//show
-		if (localStorage.getItem("list")) {
-			$("#list").html(localStorage.getItem("list"));
-		}
-
-		//remove
-		$("ul").on("click", "li", function () {
-			$(this).remove();
-			var i = $(this).text();
-			var currentList = localStorage.getItem("list");
-			// get the current list as a string.
-			var newList = currentList.replace("<li>" + i + "</li>", "");
-			// replace the clicked item with a blank string. But if you have multiple tasks with the same name this will cause deleting each of them
-			localStorage.setItem("list", newList);
-			// update the localStorage with the new list
-		});
-	</script>
 </html>
