@@ -51,8 +51,8 @@
 					<tbody id="tmp_table_body"></tbody>
 					<script>
 						init();
-
 						function init() {
+							/*
 							let temp = "";
 							for (var i = 1; i <= 8; i++) {
 								temp += "<tr>";
@@ -66,7 +66,53 @@
 								"tmp_table_body"
 							).innerHTML = temp;
 							var url =
-								"https://open.neis.go.kr/hub/hisTimetable?KEY=6a5e448c3cdf4c29822e7a31c176f968&ATPT_OFCDC_SC_CODE=S10&SD_SCHUL_CODE=9010041&ALL_TI_YMD=220929&GRADE=1&CLASS_NM=1&type=json";
+								"https://open.neis.go.kr/hub/hisTimetable?";
+							var key = "KEY=6a5e448c3cdf4c29822e7a31c176f968&";
+							var city = "ATPT_OFCDC_SC_CODE=S10&";
+							var school = "SD_SCHUL_CODE=9010041&";
+							var grade = "&GRADE=1";
+							var _class = "&CLASS_NM=1";
+							var jsontype = "&type=json";
+							for (var i = 2; i <= 2; i++) {
+								var url_day = new String(parseInt(today()) + i);
+								var t = new Date();
+								t.setDate(t.getDate() + i);
+								t = getDayOfWeek(t);
+								alert(t);
+								var call_url = "";
+								switch (t) {
+									case "토":
+										alert("수업없는날");
+										break;
+									case "일":
+										alert("수업없는날");
+										break;
+									default:
+										alert("수업있는날");
+										call_url =
+											url +
+											key +
+											city +
+											school +
+											url_day +
+											grade +
+											_class +
+											jsontype;
+										var param = "";
+
+										ajaxCallApi(
+											call_url,
+											param,
+											ApiCallBack
+										);
+										break;
+								}
+							}
+							*/
+							var url =
+								`https://open.neis.go.kr/hub/hisTimetable?KEY=6a5e448c3cdf4c29822e7a31c176f968&ATPT_OFCDC_SC_CODE=S10&SD_SCHUL_CODE=9010041&ALL_TI_YMD=` +
+								"221012" +
+								`&GRADE=1&CLASS_NM=1&type=json`;
 							var param = "";
 							alert(url);
 							ajaxCallApi(url, param, ApiCallBack);
@@ -86,11 +132,49 @@
 						}
 						function ApiCallBack(json) {
 							if (json.hisTimetable != null) {
+								alert("성공");
 								var rows = document
 									.getElementById("tmp_table_body")
 									.getElementsByTagName("tr");
-								console.log(json.hisTimetable);
+								var data = JSON.stringify(
+									json.hisTimetable[1]["row"]
+								);
+								data = JSON.parse(data);
+								alert(data.length);
+								for (var i = 0; i < data.length; i++) {
+									//data[i]["ITRT_CNTNT"];
+								}
+								alert(JSON.stringify(data));
 							}
+						}
+						function today() {
+							var date = new Date();
+							var year = date.getFullYear();
+							var year = String(year);
+							console.log(year);
+							var yy = year.substring(2, 4);
+							var month = new String(date.getMonth() + 1);
+							var day = new String(date.getDate());
+							if (month.length == 1) {
+								month = "0" + month;
+							}
+							if (day.length == 1) {
+								day = "0" + day;
+							}
+							return yy + month + day;
+						}
+						function getDayOfWeek(yymmdd) {
+							const week = [
+								"일",
+								"월",
+								"화",
+								"수",
+								"목",
+								"금",
+								"토",
+							];
+							const dayOfWeek = week[new Date(yymmdd).getDay()];
+							return dayOfWeek;
 						}
 					</script>
 				</table>
