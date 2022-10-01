@@ -17,13 +17,13 @@
 				},
 				false
 			);
-
 			function loaded() {
 				window.scrollTo(0, 1);
 			}
 		</script>
 	</head>
 	<body>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<div class="container">
 			<div class="today">
 				<p class="subtitle">2022. 09. 28 Thur.</p>
@@ -38,78 +38,61 @@
 			<p style="clear: both; height: 1px"></p>
 			<div class="table">
 				<table>
-					<tr>
-						<td>　</td>
-						<td class="tb">월</td>
-						<td class="tb">화</td>
-						<td class="tb">수</td>
-						<td class="tb">목</td>
-						<td class="tb">금</td>
-					</tr>
-					<tr>
-						<td class="tb">1</td>
-						<td>과학</td>
-						<td>국어</td>
-						<td>영어</td>
-						<td>수학</td>
-						<td>과학</td>
-					</tr>
-					<tr>
-						<td class="tb">2</td>
-						<td>과학</td>
-						<td>국어</td>
-						<td>영어</td>
-						<td>수학</td>
-						<td>과학</td>
-					</tr>
-					<tr>
-						<td class="tb">3</td>
-						<td>과학</td>
-						<td>국어</td>
-						<td>영어</td>
-						<td>수학</td>
-						<td>과학</td>
-					</tr>
-					<tr>
-						<td class="tb">4</td>
-						<td>과학</td>
-						<td>국어</td>
-						<td>영어</td>
-						<td>수학</td>
-						<td>과학</td>
-					</tr>
-					<tr>
-						<td class="tb">5</td>
-						<td>과학</td>
-						<td>국어</td>
-						<td>영어</td>
-						<td>수학</td>
-						<td>과학</td>
-					</tr>
-					<tr>
-						<td class="tb">6</td>
-						<td>과학</td>
-						<td>국어</td>
-						<td>영어</td>
-						<td>수학</td>
-						<td>과학</td>
-					</tr>
-					<tr>
-						<td class="tb">7</td>
-						<td>과학</td>
-						<td>국어</td>
-						<td>영어</td>
-						<td>수학</td>
-						<td>과학</td>
-					</tr>
-					<tr>
-						<td class="tb">8</td>
-						<td>과학</td>
-						<td>국어</td>
-						<td>영어</td>
-						<td>수학</td>
-						<td>과학</td>
-					</tr>
+					<thead>
+						<tr>
+							<th>　</th>
+							<th>월</th>
+							<th>화</th>
+							<th>수</th>
+							<th>목</th>
+							<th>금</th>
+						</tr>
+					</thead>
+					<tbody id="tmp_table_body"></tbody>
+					<script>
+						init();
+
+						function init() {
+							let temp = "";
+							for (var i = 1; i <= 8; i++) {
+								temp += "<tr>";
+								temp += `<th> ${i} </th>`;
+								for (var j = 0; j < 5; j++) {
+									temp += "<td>　</td>";
+								}
+								temp += "</tr>";
+							}
+							document.getElementById(
+								"tmp_table_body"
+							).innerHTML = temp;
+							var url =
+								"https://open.neis.go.kr/hub/hisTimetable?KEY=6a5e448c3cdf4c29822e7a31c176f968&ATPT_OFCDC_SC_CODE=S10&SD_SCHUL_CODE=9010041&ALL_TI_YMD=220929&GRADE=1&CLASS_NM=1&type=json";
+							var param = "";
+							alert(url);
+							ajaxCallApi(url, param, ApiCallBack);
+						}
+						function ajaxCallApi(url, param, callback) {
+							$.ajax({
+								url: url,
+								async: true,
+								type: "post",
+								data: param,
+								dataType: "json",
+								success: callback,
+								error: function (req, txt) {
+									alert(`에러`);
+								},
+							});
+						}
+						function ApiCallBack(json) {
+							if (json.hisTimetable != null) {
+								var rows = document
+									.getElementById("tmp_table_body")
+									.getElementsByTagName("tr");
+								console.log(json.hisTimetable);
+							}
+						}
+					</script>
 				</table>
 			</div>
 			<p style="clear: both"></p>
