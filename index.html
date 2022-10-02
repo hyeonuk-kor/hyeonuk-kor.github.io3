@@ -60,13 +60,15 @@
 							var _class = "&CLASS_NM=1";
 							var jsontype = "&type=json";
 							for (var i = 0; i < 7; i++) {
-								var url_day = new String(parseInt(today()) + i);
+								var url_day = new String(parseInt(today(-i)));
+								//alert(url_day);
 								var t = new Date();
-								t.setDate(t.getDate() + i);
+								t.setDate(t.getDate() - i);
 								t = getDayOfWeek(t);
 								//console.log(url_day);
 								//console.log(t);
 								var call_url = "";
+								alert(t);
 								switch (t) {
 									case "토":
 										break;
@@ -78,6 +80,7 @@
 										var param = "";
 										ajaxCallApi(call_url, param, ApiCallBack).done((data) => {
 											var timeTable = [];
+											console.log(data);
 											console.log(JSON.stringify(data["hisTimetable"][1]));
 											list_total_count = JSON.stringify(data["hisTimetable"][0]["head"][0]["list_total_count"]);
 											console.log(list_total_count);
@@ -116,18 +119,23 @@
 						}
 						function ApiCallBack(json) {
 							if (json.hisTimetable != null) {
-								/*
+								/*	
 								alert("성공");
 								var rows = document
 									.getElementById("tmp_table_body")
 									.getElementsByTagName("tr");
 									*/
+								console.log(json.hisTimetable);
 								var data = JSON.stringify(json.hisTimetable[1]["row"]);
 								return JSON.parse(data);
 							}
 						}
-						function today() {
+						function today(calc) {
 							var date = new Date();
+							alert(date + " " + calc);
+
+							date.setDate(date.getDate() + calc);
+							alert(date);
 							var year = date.getFullYear();
 							var year = String(year);
 							var yy = year.substring(2, 4);
