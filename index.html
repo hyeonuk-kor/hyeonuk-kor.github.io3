@@ -61,12 +61,9 @@
 							var jsontype = "&type=json";
 							for (var i = 0; i < 7; i++) {
 								var url_day = new String(parseInt(today(-i)));
-								//alert(url_day);
 								var t = new Date();
 								t.setDate(t.getDate() - i);
 								t = getDayOfWeek(t);
-								//console.log(url_day);
-								//console.log(t);
 								var call_url = "";
 								//alert(t);
 								switch (t) {
@@ -80,8 +77,6 @@
 										var param = "";
 										ajaxCallApi(call_url, param, ApiCallBack).done((data) => {
 											var timeTable = [];
-											console.log(data);
-											console.log(JSON.stringify(data["hisTimetable"][1]));
 											list_total_count = JSON.stringify(data["hisTimetable"][0]["head"][0]["list_total_count"]);
 											console.log(list_total_count);
 											console.log(t);
@@ -91,7 +86,6 @@
 												var subject = JSON.stringify(data["hisTimetable"][1]["row"][i]["ITRT_CNTNT"]);
 												timeTables[getDayOfIndex(t)][getDayOfIndex(t)].push(subject);
 											}
-											//console.log(timeTables);
 										});
 										break;
 								}
@@ -119,12 +113,6 @@
 						}
 						function ApiCallBack(json) {
 							if (json.hisTimetable != null) {
-								/*	
-								alert("성공");
-								var rows = document
-									.getElementById("tmp_table_body")
-									.getElementsByTagName("tr");
-									*/
 								console.log(json.hisTimetable);
 								var data = JSON.stringify(json.hisTimetable[1]["row"]);
 								return JSON.parse(data);
@@ -132,10 +120,7 @@
 						}
 						function today(calc) {
 							var date = new Date();
-							//alert(date + " " + calc);
-
 							date.setDate(date.getDate() + calc);
-							//alert(date);
 							var year = date.getFullYear();
 							var year = String(year);
 							var yy = year.substring(2, 4);
@@ -159,21 +144,6 @@
 							return dayOfWeek;
 						}
 						function makeTable() {
-							//console.log(timeTables);
-							/*
-							var result = "<table border=1>";
-							for (var i = 0; i < rotTables.length; i++) {
-								result += "<tr>";
-								for (var j = 0; j < rotTables[i].length; j++) {
-									if (rotTables[i][j] != undefined) {
-										result += "<td>" + rotTables[i][j] + "</td>";
-									}
-								}
-								result += "</tr>";
-							}
-							result += "</table>";
-							document.getElementById("tmp_table_body").innerHTML = result;
-							*/
 							console.log("test");
 							console.log(timeTables);
 							let temp = "";
