@@ -2,10 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta
-			name="viewport"
-			content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"
-		/>
+		<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
 		<title>Study Day</title>
 		<script src="https://secure.exportkit.com/cdn/js/ek_googlefonts.js?v=6"></script>
 		<link rel="StyleSheet" href="skins/main.css" />
@@ -50,77 +47,64 @@
 					</thead>
 					<tbody id="tmp_table_body"></tbody>
 					<script>
+						var timeTables = [{}, { 1: [] }, { 2: [] }, { 3: [] }, { 4: [] }, { 5: [] }, {}];
+						var rotTables = [];
 						init();
+						makeTable();
 						function init() {
-							/*
-							let temp = "";
-							for (var i = 1; i <= 8; i++) {
-								temp += "<tr>";
-								temp += `<th> ${i} </th>`;
-								for (var j = 0; j < 5; j++) {
-									temp += "<td>　</td>";
-								}
-								temp += "</tr>";
-							}
-							document.getElementById(
-								"tmp_table_body"
-							).innerHTML = temp;
-							var url =
-								"https://open.neis.go.kr/hub/hisTimetable?";
+							var url = "https://open.neis.go.kr/hub/hisTimetable?";
 							var key = "KEY=6a5e448c3cdf4c29822e7a31c176f968&";
 							var city = "ATPT_OFCDC_SC_CODE=S10&";
-							var school = "SD_SCHUL_CODE=9010041&";
+							var school = "SD_SCHUL_CODE=9010041&ALL_TI_YMD=";
 							var grade = "&GRADE=1";
 							var _class = "&CLASS_NM=1";
 							var jsontype = "&type=json";
-							for (var i = 2; i <= 2; i++) {
+							for (var i = 0; i < 7; i++) {
 								var url_day = new String(parseInt(today()) + i);
 								var t = new Date();
 								t.setDate(t.getDate() + i);
 								t = getDayOfWeek(t);
-								alert(t);
+								//console.log(url_day);
+								//console.log(t);
 								var call_url = "";
 								switch (t) {
 									case "토":
-										alert("수업없는날");
 										break;
 									case "일":
-										alert("수업없는날");
 										break;
 									default:
-										alert("수업있는날");
-										call_url =
-											url +
-											key +
-											city +
-											school +
-											url_day +
-											grade +
-											_class +
-											jsontype;
+										call_url = url + key + city + school + url_day + grade + _class + jsontype;
+										var list_total_count;
 										var param = "";
-
-										ajaxCallApi(
-											call_url,
-											param,
-											ApiCallBack
-										);
+										ajaxCallApi(call_url, param, ApiCallBack).done((data) => {
+											var timeTable = [];
+											console.log(JSON.stringify(data["hisTimetable"][1]));
+											list_total_count = JSON.stringify(data["hisTimetable"][0]["head"][0]["list_total_count"]);
+											console.log(list_total_count);
+											console.log(t);
+											console.log(getDayOfIndex(t));
+											//console.log(timeTables[getDayOfIndex(t)][t]);
+											for (var i = 0; i < list_total_count; i++) {
+												var subject = JSON.stringify(data["hisTimetable"][1]["row"][i]["ITRT_CNTNT"]);
+												timeTables[getDayOfIndex(t)][getDayOfIndex(t)].push(subject);
+											}
+											//console.log(timeTables);
+										});
 										break;
 								}
 							}
-							*/
-							var url =
-								`https://open.neis.go.kr/hub/hisTimetable?KEY=6a5e448c3cdf4c29822e7a31c176f968&ATPT_OFCDC_SC_CODE=S10&SD_SCHUL_CODE=9010041&ALL_TI_YMD=` +
-								"221012" +
-								`&GRADE=1&CLASS_NM=1&type=json`;
-							var param = "";
-							alert(url);
-							ajaxCallApi(url, param, ApiCallBack);
+							for (var i = 0; i < 8; i++) {
+								var temp = [];
+								for (var j = 1; j <= 5; j++) {
+									temp.push(timeTables[j][j][i]);
+								}
+								rotTables.push(temp);
+							}
 						}
 						function ajaxCallApi(url, param, callback) {
-							$.ajax({
+							return $.ajax({
 								url: url,
-								async: true,
+								async: false,
 								type: "post",
 								data: param,
 								dataType: "json",
@@ -132,26 +116,20 @@
 						}
 						function ApiCallBack(json) {
 							if (json.hisTimetable != null) {
+								/*
 								alert("성공");
 								var rows = document
 									.getElementById("tmp_table_body")
 									.getElementsByTagName("tr");
-								var data = JSON.stringify(
-									json.hisTimetable[1]["row"]
-								);
-								data = JSON.parse(data);
-								alert(data.length);
-								for (var i = 0; i < data.length; i++) {
-									//data[i]["ITRT_CNTNT"];
-								}
-								alert(JSON.stringify(data));
+									*/
+								var data = JSON.stringify(json.hisTimetable[1]["row"]);
+								return JSON.parse(data);
 							}
 						}
 						function today() {
 							var date = new Date();
 							var year = date.getFullYear();
 							var year = String(year);
-							console.log(year);
 							var yy = year.substring(2, 4);
 							var month = new String(date.getMonth() + 1);
 							var day = new String(date.getDate());
@@ -163,18 +141,45 @@
 							}
 							return yy + month + day;
 						}
+						function getDayOfIndex(day) {
+							const week = ["일", "월", "화", "수", "목", "금", "토"];
+							return week.indexOf(day);
+						}
 						function getDayOfWeek(yymmdd) {
-							const week = [
-								"일",
-								"월",
-								"화",
-								"수",
-								"목",
-								"금",
-								"토",
-							];
+							const week = ["일", "월", "화", "수", "목", "금", "토"];
 							const dayOfWeek = week[new Date(yymmdd).getDay()];
 							return dayOfWeek;
+						}
+						function makeTable() {
+							//console.log(timeTables);
+							/*
+							var result = "<table border=1>";
+							for (var i = 0; i < rotTables.length; i++) {
+								result += "<tr>";
+								for (var j = 0; j < rotTables[i].length; j++) {
+									if (rotTables[i][j] != undefined) {
+										result += "<td>" + rotTables[i][j] + "</td>";
+									}
+								}
+								result += "</tr>";
+							}
+							result += "</table>";
+							document.getElementById("tmp_table_body").innerHTML = result;
+							*/
+							console.log("test");
+							console.log(timeTables);
+							let temp = "";
+							for (var i = 0; i < rotTables.length; i++) {
+								temp += "<tr>";
+								temp += `<th> ${i} </th>`;
+								for (var j = 0; j < rotTables[i].length; j++) {
+									if (rotTables[i][j] != undefined) {
+										temp += `<td>${rotTables[i][j].replaceAll('"', "")}</td>`;
+									}
+								}
+								temp += "</tr>";
+							}
+							document.getElementById("tmp_table_body").innerHTML = temp;
 						}
 					</script>
 				</table>
