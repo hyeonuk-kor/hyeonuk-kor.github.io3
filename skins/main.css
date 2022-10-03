@@ -52,6 +52,7 @@ table {
 	font-size: 0.8rem;
 	border-style: hidden;
 	text-align: center;
+	border-collapse: collapse;
 }
 th {
 	font-size: 18px;
