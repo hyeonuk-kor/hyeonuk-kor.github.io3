@@ -37,7 +37,7 @@
 				<table>
 					<thead>
 						<tr>
-							<th>　</th>
+							<th style="padding: 0px">　</th>
 							<th>월</th>
 							<th>화</th>
 							<th>수</th>
@@ -149,7 +149,7 @@
 							let temp = "";
 							for (var i = 0; i < rotTables.length; i++) {
 								temp += "<tr>";
-								temp += `<th> ${i} </th>`;
+								temp += `<th> ${i + 1} </th>`;
 								for (var j = 0; j < rotTables[i].length; j++) {
 									if (rotTables[i][j] != undefined) {
 										temp += `<td>${rotTables[i][j].replaceAll('"', "")}</td>`;
